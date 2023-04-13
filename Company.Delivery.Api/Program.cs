@@ -1,10 +1,11 @@
-using Company.Delivery.Api.AppStart;
-using Company.Delivery.Api.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDeliveryControllers();
 builder.Services.AddDeliveryApi();
+
+builder.Services.AddScoped<IWaybillService, WaybillService>();
+
+builder.Services.AddDbContext<DeliveryDbContext>(options => options.UseInMemoryDatabase("InMemoryDatabase") );
 
 var app = builder.Build();
 
