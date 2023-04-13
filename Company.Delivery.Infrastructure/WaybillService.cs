@@ -85,6 +85,7 @@ public class WaybillService : IWaybillService
     {
         var waybill = await _deliveryDbContext
             .Waybills
+            .Include(x => x.Items)
             .FirstOrDefaultAsync(wb => wb.Id == id, cancellationToken);
 
         // Если сущность не найдена по идентификатору, кинуть исключение типа EntityNotFoundException
