@@ -8,8 +8,8 @@ public class CargoItem
 
     public Waybill? Waybill { get; set; }
 
-    // TODO: Уникальное значение в пределах сущности Waybill
-    public string Number { get; set; } = null!;
+    // Уникальное значение в пределах сущности Waybill
+    public required string Number { get; set; }
 
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 }

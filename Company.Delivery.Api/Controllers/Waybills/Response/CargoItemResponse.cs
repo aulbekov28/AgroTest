@@ -18,10 +18,10 @@ public class CargoItemResponse
     /// <summary>
     /// Number
     /// </summary>
-    public string Number { get; init; } = null!;
+    public required string Number { get; init; }
 
     /// <summary>
     /// Name
     /// </summary>
-    public string Name { get; init; } = null!;
+    public required string Name { get; init; }
 }

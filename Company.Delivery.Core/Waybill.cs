@@ -4,8 +4,8 @@ public class Waybill
 {
     public Guid Id { get; set; }
 
-    // TODO: уникальное значение
-    public string Number { get; set; } = null!;
+    // уникальное значение
+    public required string Number { get; set; }
 
     public DateTime Date { get; set; }
 

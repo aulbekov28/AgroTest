@@ -6,7 +6,7 @@ public class CargoItemDto
 
     public Guid WaybillId { get; init; }
 
-    public string Number { get; init; } = null!;
+    public required string Number { get; init; }
 
-    public string Name { get; init; } = null!;
+    public required string Name { get; init; }
 }

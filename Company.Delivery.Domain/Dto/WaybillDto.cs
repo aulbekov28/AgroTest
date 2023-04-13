@@ -4,7 +4,7 @@ public class WaybillDto
 {
     public Guid Id { get; init; }
 
-    public string Number { get; init; } = null!;
+    public required string Number { get; init; }
 
     public DateTime Date { get; init; }
 

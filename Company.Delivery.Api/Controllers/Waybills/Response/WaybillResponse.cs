@@ -1,3 +1,5 @@
+using Company.Delivery.Domain.Dto;
+
 namespace Company.Delivery.Api.Controllers.Waybills.Response;
 
 /// <summary>
@@ -13,7 +15,7 @@ public class WaybillResponse
     /// <summary>
     /// Number
     /// </summary>
-    public string Number { get; init; } = null!;
+    public required string Number { get; init; }
 
     /// <summary>
     /// Date
@@ -24,4 +26,24 @@ public class WaybillResponse
     /// Items
     /// </summary>
     public IEnumerable<CargoItemResponse>? Items { get; init; }
+
+    /// <summary>
+    /// Convert from waybillDto object
+    /// </summary>
+    /// <param name="waybill"></param>
+    /// <returns></returns>
+    public static WaybillResponse FromWaybill(WaybillDto waybill) =>
+        new()
+        {
+            Id = waybill.Id,
+            Date = waybill.Date,
+            Number = waybill.Number,
+            Items = waybill.Items?.Select(x => new CargoItemResponse
+            {
+                Id = x.Id,
+                Number = x.Number,
+                Name = x.Name,
+                WaybillId = x.WaybillId
+            })
+        };
 }

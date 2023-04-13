@@ -2,7 +2,7 @@
 
 public class WaybillCreateDto
 {
-    public string Number { get; init; } = null!;
+    public required string Number { get; init; }
 
     public DateTime Date { get; init; }
 
