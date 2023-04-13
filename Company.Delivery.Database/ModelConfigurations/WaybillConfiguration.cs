@@ -8,8 +8,17 @@ internal class WaybillConfiguration : IEntityTypeConfiguration<Waybill>
 {
     public void Configure(EntityTypeBuilder<Waybill> builder)
     {
-        // TODO: все строковые свойства должны иметь ограничение на длину
-        // TODO: должно быть ограничение на уникальность свойства Waybill.Number
-        // TODO: ApplicationDbContextTests должен выполняться без ошибок
+        // все строковые свойства должны иметь ограничение на длину
+        // должно быть ограничение на уникальность свойства Waybill.Number
+        // ApplicationDbContextTests должен выполняться без ошибок
+
+        builder.Property(t => t.Number)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.HasIndex(e => e.Number, "UX_Waybill_Number")
+            .IsUnique();
+
+
     }
 }

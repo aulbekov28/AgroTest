@@ -25,11 +25,19 @@ public class WaybillsController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(WaybillResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        // TODO: вернуть ответ с кодом 200 если найдено или кодом 404 если не найдено
-        // TODO: WaybillsControllerTests должен выполняться без ошибок
-        throw new NotImplementedException();
+        // вернуть ответ с кодом 200 если найдено или кодом 404 если не найдено
+        // WaybillsControllerTests должен выполняться без ошибок
+        try
+        {
+            var waybill = await _waybillService.GetByIdAsync(id, cancellationToken);
+            return Ok(WaybillResponse.FromWaybill(waybill));
+        }
+        catch (EntityNotFoundException)
+        {
+            return new NotFoundResult();
+        }
     }
 
     /// <summary>
@@ -37,11 +45,12 @@ public class WaybillsController : ControllerBase
     /// </summary>
     [HttpPost]
     [ProducesResponseType(typeof(WaybillResponse), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] WaybillCreateRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateAsync([FromBody] WaybillCreateRequest request, CancellationToken cancellationToken)
     {
-        // TODO: вернуть ответ с кодом 200 если успешно создано
-        // TODO: WaybillsControllerTests должен выполняться без ошибок
-        throw new NotImplementedException();
+        // вернуть ответ с кодом 200 если успешно создано
+        // WaybillsControllerTests должен выполняться без ошибок
+        var result = await _waybillService.CreateAsync(request.ToCreateDto(), cancellationToken);
+        return Ok(WaybillResponse.FromWaybill(result));
     }
 
     /// <summary>
@@ -50,11 +59,19 @@ public class WaybillsController : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(WaybillResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> UpdateByIdAsync(Guid id, [FromBody] WaybillUpdateRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateByIdAsync(Guid id, [FromBody] WaybillUpdateRequest request, CancellationToken cancellationToken)
     {
-        // TODO: вернуть ответ с кодом 200 если найдено и изменено, или 404 если не найдено
-        // TODO: WaybillsControllerTests должен выполняться без ошибок
-        throw new NotImplementedException();
+        // вернуть ответ с кодом 200 если найдено и изменено, или 404 если не найдено
+        // WaybillsControllerTests должен выполняться без ошибок
+        try
+        {
+            var result = await _waybillService.UpdateByIdAsync(id, request.ToUpdateDto(), cancellationToken);
+            return Ok(WaybillResponse.FromWaybill(result));
+        }
+        catch (EntityNotFoundException)
+        {
+            return new NotFoundResult();
+        }
     }
 
     /// <summary>
@@ -63,10 +80,20 @@ public class WaybillsController : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        // TODO: вернуть ответ с кодом 200 если найдено и удалено, или 404 если не найдено
-        // TODO: WaybillsControllerTests должен выполняться без ошибок
-        throw new NotImplementedException();
+        // вернуть ответ с кодом 200 если найдено и удалено, или 404 если не найдено
+        // WaybillsControllerTests должен выполняться без ошибок
+        try
+        {
+            await _waybillService.DeleteByIdAsync(id, cancellationToken);
+        }
+        catch (EntityNotFoundException)
+        {
+            return new NotFoundResult();
+        }
+
+
+        return Ok();
     }
 }

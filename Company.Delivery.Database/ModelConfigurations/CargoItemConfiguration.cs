@@ -8,8 +8,19 @@ internal class CargoItemConfiguration : IEntityTypeConfiguration<CargoItem>
 {
     public void Configure(EntityTypeBuilder<CargoItem> builder)
     {
-        // TODO: все строковые свойства должны иметь ограничение на длину
-        // TODO: должно быть ограничение на уникальность свойства CargoItem.Number в пределах одной сущности Waybill
-        // TODO: ApplicationDbContextTests должен выполняться без ошибок
+        // все строковые свойства должны иметь ограничение на длину
+        // должно быть ограничение на уникальность свойства CargoItem.Number в пределах одной сущности Waybill
+        // ApplicationDbContextTests должен выполняться без ошибок
+
+        builder.Property(t => t.Name)
+            .HasMaxLength(150)
+            .IsRequired();
+
+        builder.Property(t => t.Number)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.HasIndex(e => e.Number, "UX_CargoItem_Number")
+            .IsUnique();
     }
 }

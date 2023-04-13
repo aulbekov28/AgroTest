@@ -1,5 +1,6 @@
 using Company.Delivery.Core;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Company.Delivery.Database;
 
@@ -13,9 +14,9 @@ public class DeliveryDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        // регистрация всех реализаций IEntityTypeConfiguration в сборке Company.Delivery.Database
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // TODO: регистрация всех реализаций IEntityTypeConfiguration в сборке Company.Delivery.Database
-        throw new NotImplementedException();
+        base.OnModelCreating(modelBuilder);
     }
 }

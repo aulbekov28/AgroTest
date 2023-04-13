@@ -38,7 +38,7 @@ public class WaybillsControllerTests : IClassFixture<WaybillsControllerFixture>
     [Fact]
     public async Task CreateOkTest()
     {
-        var result = await _waybillsControllerFixture.Instance.CreateAsync(new WaybillCreateRequest(), CancellationToken.None);
+        var result = await _waybillsControllerFixture.Instance.CreateAsync(new WaybillCreateRequest() { Number = "1" }, CancellationToken.None);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
         var actual = Assert.IsType<WaybillResponse>(okResult.Value);
@@ -50,7 +50,7 @@ public class WaybillsControllerTests : IClassFixture<WaybillsControllerFixture>
     public async Task UpdateByIdOkTest()
     {
         var result = await _waybillsControllerFixture.Instance.UpdateByIdAsync(Guid.Parse("BBB2AFB6-8ECF-4F63-9F98-71C3FC1B5F33"),
-            new WaybillUpdateRequest(), CancellationToken.None);
+            new WaybillUpdateRequest() { Number = "1" }, CancellationToken.None);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
         var actual = Assert.IsType<WaybillResponse>(okResult.Value);
@@ -61,7 +61,8 @@ public class WaybillsControllerTests : IClassFixture<WaybillsControllerFixture>
     [Fact]
     public async Task UpdateByIdNotFoundTest()
     {
-        var result = await _waybillsControllerFixture.Instance.GetByIdAsync(Guid.Parse("BBB2AFB6-8ECF-4F63-9F98-71C3FC1B5F34"), CancellationToken.None);
+        var result = await _waybillsControllerFixture.Instance.UpdateByIdAsync(Guid.Parse("BBB2AFB6-8ECF-4F63-9F98-71C3FC1B5F34"),
+            new WaybillUpdateRequest() { Number = "1" }, CancellationToken.None);
 
         Assert.IsType<NotFoundResult>(result);
     }
