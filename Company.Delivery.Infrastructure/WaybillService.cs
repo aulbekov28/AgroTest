@@ -12,7 +12,7 @@ public class WaybillService : IWaybillService
 
     public WaybillService(DeliveryDbContext deliveryDbContext) => _deliveryDbContext = deliveryDbContext;
 
-    private Func<Waybill, WaybillDto> MapToWaybillDto => wb => new WaybillDto
+    private static Func<Waybill, WaybillDto> MapToWaybillDto => wb => new WaybillDto
     {
         Id = wb.Id,
         Number = wb.Number,
@@ -111,20 +111,20 @@ public class WaybillService : IWaybillService
 
     public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var waybill = new Waybill
+        try
         {
-            Id = id,
-            Number = null!
-        };
-
-        _deliveryDbContext.Waybills.Remove(waybill);
-
-        var deleted = await _deliveryDbContext
-            .SaveChangesAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        // Если сущность не найдена по идентификатору, кинуть исключение типа EntityNotFoundException
-        if (deleted == 0)
+            var waybill = _deliveryDbContext.Waybills.Attach(
+                new Waybill
+                {
+                    Id = id,
+                    Number = null!
+                });
+            waybill.State = EntityState.Deleted;
+            await _deliveryDbContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (DbUpdateConcurrencyException) // Если сущность не найдена по идентификатору, кинуть исключение типа EntityNotFoundException
         {
             throw new EntityNotFoundException();
         }
